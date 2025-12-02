@@ -34,6 +34,7 @@ const Navbar = () => {
   const [active, setActive] = useState<NavId>("home");
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const { resolvedTheme, setTheme } = useTheme();
+  const [openSearch, setOpenSearch] = useState(false);
 
   const toggleDropdown = (id: string) => {
     setOpenDropdown((prev) => (prev === id ? null : id));
@@ -168,6 +169,68 @@ const Navbar = () => {
 
         {/* ACTION BUTTONS */}
         <div className="flex items-center gap-3">
+          {/* SEARCH BUTTON */}
+          <div className="relative hidden md:block group">
+            <button
+              onClick={() => setOpenSearch((p) => !p)}
+              className={cn("flex items-center justify-center w-10 h-10 ")}
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5 text-gray-600 dark:text-gray-300"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth="2"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M21 21l-4.35-4.35m1.1-5.4a6.5 6.5 0 11-13 0 6.5 6.5 0 0113 0z"
+                />
+              </svg>
+            </button>
+          </div>
+
+          {/* FULL WIDTH DROPDOWN */}
+          {openSearch && (
+            <div
+              className={cn(
+                "absolute left-0 right-0 top-full mt-1 px-4 z-50" // FULL WIDTH
+              )}
+            >
+              <div
+                className={cn(
+                  "w-full p-4 rounded-xl border shadow-lg",
+                  "bg-white dark:bg-black border-gray-300 dark:border-gray-700",
+                  "animate-in fade-in slide-in-from-top-2 duration-200"
+                )}
+              >
+                <div className="flex justify-center">
+                  <div className="flex w-full max-w-xl gap-2">
+                    {" "}
+                    <input
+                      type="text"
+                      autoFocus
+                      placeholder="Search Microlab Studio . . ."
+                      className="flex-1 px-4 py-3 text-sm rounded-lg border bg-transparent
+          border-gray-300 dark:border-gray-700
+          outline-none font-incognito"
+                    />
+                    <button
+                      className={cn(
+                        "px-4 py-3 rounded-lg border text-sm font-incognito",
+                        "border-gray-300 dark:border-gray-700",
+                        "hover:bg-gray-100 dark:hover:bg-gray-900 transition"
+                      )}
+                    >
+                      Search
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
           <Link
             href="/OrderNow"
             className={cn(
