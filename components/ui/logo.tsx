@@ -5,14 +5,14 @@ import Image from "next/image";
 interface LogoProps {
   className?: string;
   src?: string;
-  text?: string; 
-  textClassName?: string; 
+  text?: string;
+  textClassName?: string;
 }
 
 export function Logo({
   className = "w-10",
   src = "/Logo.png",
-  text = "Microlab Studio", 
+  text = "Microlab Studio",
   textClassName = "font-incognito text-2xl font-semibold tracking-wide",
 }: LogoProps) {
   return (
@@ -27,7 +27,9 @@ export function Logo({
           priority
         />
       </div>
-      {text && <span className={cn(textClassName)}>{text}</span>}
+      {text && (
+        <span className={cn("hidden md:inline", textClassName)}>{text}</span>
+      )}
     </div>
   );
 }

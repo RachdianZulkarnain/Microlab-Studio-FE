@@ -2,10 +2,10 @@
 
 import { cn } from "@/lib/utils";
 import { AnimatePresence, motion } from "framer-motion";
-import { MenuIcon, XIcon } from "lucide-react";
+import { MenuIcon, Search, XIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Logo } from "../ui/logo";
 import { ThemeToggleButton2 } from "../ui/theme-toggle";
 
@@ -35,6 +35,19 @@ const Navbar = () => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const { resolvedTheme, setTheme } = useTheme();
   const [openSearch, setOpenSearch] = useState(false);
+
+  const searchRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (searchRef.current && !(searchRef.current as any).contains(e.target)) {
+        setOpenSearch(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   const toggleDropdown = (id: string) => {
     setOpenDropdown((prev) => (prev === id ? null : id));
@@ -79,7 +92,6 @@ const Navbar = () => {
 
             return (
               <div key={x.id} className="relative group">
-                {/* PARENT LABEL */}
                 {hasChildren ? (
                   <div
                     className={cn(
@@ -167,10 +179,9 @@ const Navbar = () => {
           })}
         </div>
 
-        {/* ACTION BUTTONS */}
         <div className="flex items-center gap-3">
           {/* SEARCH BUTTON */}
-          <div className="relative hidden md:block group">
+          <div ref={searchRef} className="relative hidden md:block group">
             <button
               onClick={() => setOpenSearch((p) => !p)}
               className={cn("flex items-center justify-center w-10 h-10 ")}
@@ -192,12 +203,10 @@ const Navbar = () => {
             </button>
           </div>
 
-          {/* FULL WIDTH DROPDOWN */}
+          {/* SEARCH DROPDOWN */}
           {openSearch && (
             <div
-              className={cn(
-                "absolute left-0 right-0 top-full mt-1 px-4 z-50" // FULL WIDTH
-              )}
+              className={cn("absolute left-0 right-0 top-full mt-1 px-4 z-50")}
             >
               <div
                 className={cn(
@@ -303,13 +312,26 @@ const Navbar = () => {
             className="md:hidden overflow-hidden"
           >
             <div className="font-incognito mt-2 flex flex-col gap-1 border rounded-lg p-3 bg-white dark:bg-black">
+              {/* MOBILE SEARCH */}
+              <div className="mb-2">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    placeholder="Search Microlab Studio..."
+                    className="flex-1 px-3 py-2 text-sm rounded-lg border border-gray-300 dark:border-gray-700 bg-transparent outline-none"
+                  />
+                  <button className="px-3 py-2 rounded-lg bg-blue-600 text-white text-sm font-medium hover:bg-blue-700 transition">
+                    <Search className="size-4" />
+                  </button>
+                </div>
+              </div>
+
               {NAV_LINKS.map((x) => {
                 const hasChildren = Array.isArray(x.children);
                 const isOpen = openDropdown === x.id;
 
                 return (
                   <div key={x.id}>
-                    {/* PARENT ITEM */}
                     <button
                       onClick={() =>
                         hasChildren
@@ -350,7 +372,6 @@ const Navbar = () => {
                       )}
                     </button>
 
-                    {/* CHILDREN */}
                     {hasChildren && isOpen && (
                       <div className="ml-4 flex flex-col gap-1 mt-1">
                         {x.children?.map((child) => (
@@ -362,7 +383,7 @@ const Navbar = () => {
                               setOpen(false);
                             }}
                             className="px-3 py-2 rounded-md text-sm text-left text-gray-600 
-                            dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 transition"
+                      dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 transition"
                           >
                             {child.label}
                           </Link>
