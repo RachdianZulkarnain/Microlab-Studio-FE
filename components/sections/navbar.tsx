@@ -252,7 +252,7 @@ const Navbar = () => {
           </Link>
 
           <Link
-            href="/SignIn"
+            href="/sign-in"
             className={cn(
               "font-incognito hidden md:inline-block px-4 py-2 rounded-full text-sm font-medium",
               "border border-gray-300 dark:border-gray-700",
@@ -406,7 +406,7 @@ const Navbar = () => {
               </Link>
 
               <Link
-                href="/SignIn"
+                href="/sign-in"
                 onClick={() => setOpen(false)}
                 className={cn(
                   "font-incognito mt-2 px-3 py-2 rounded-md text-sm font-semibold text-white",

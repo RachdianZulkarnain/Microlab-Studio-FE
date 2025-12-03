@@ -4,6 +4,7 @@ import Providers from "@/components/providers";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import "./globals.css";
+import { SessionProvider } from "next-auth/react";
 
 export const metadata: Metadata = {
   title: "Microlab Studio",
@@ -26,9 +27,11 @@ export default function RootLayout({
           pixelifySans.variable
         )}
       >
+        <SessionProvider>
         <Providers>
           <MotionConfigWrapper>{children}</MotionConfigWrapper>
         </Providers>
+        </SessionProvider>
       </body>
     </html>
   );
